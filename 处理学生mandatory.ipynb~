@@ -1,0 +1,129 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# import pandas as pd\n",
+    "\n",
+    "# # 加载文件\n",
+    "# file_path = '学生mandatory数据.xlsx'\n",
+    "# df = pd.read_excel(file_path)\n",
+    "\n",
+    "# # 检查 'Modules' 列是否存在并统计不同课程的数量\n",
+    "# if 'Modules' in df.columns:\n",
+    "#     # 假设课程名称在 'Modules' 列中以逗号分隔\n",
+    "#     df['course counts'] = df['Modules'].apply(lambda x: len(set(x.split(','))) if pd.notnull(x) else 0)\n",
+    "# else:\n",
+    "#     print(\"数据中不存在 'Modules' 列\")\n",
+    "\n",
+    "\n",
+    "# # 保存更新后的文件\n",
+    "# df.to_excel('更新后的学生mandatory数据.xlsx', index=False)\n",
+    "# print(\"已生成包含课程统计的文件 '更新后的学生mandatory数据.xlsx'\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd\n",
+    "\n",
+    "# 加载文件\n",
+    "file_path = '学生mandatory数据.xlsx'\n",
+    "df = pd.read_excel(file_path)\n",
+    "\n",
+    "# 定义需要检查的语言课程集合\n",
+    "language_courses = {\"SPN1002\", \"FRN1002\", \"JAP1002\", \"KOR1002\"}\n",
+    "\n",
+    "# 处理每个单元格的函数\n",
+    "def process_modules(modules):\n",
+    "    if pd.isnull(modules):\n",
+    "        return modules  # 如果单元格为空，直接返回\n",
+    "    \n",
+    "    # 将单元格内容按逗号分隔并转换为集合\n",
+    "    courses = set(modules.split(\", \"))\n",
+    "    \n",
+    "    # 检查是否包含全部四门语言课程\n",
+    "    if language_courses.issubset(courses):\n",
+    "        # 如果包含全部四门课程，则替换为 'LNG1000'\n",
+    "        # courses = (courses - language_courses) | {\"LNG1000\"}\n",
+    "        courses = (courses - language_courses) | {\"LNG1000\"}\n",
+    "    else:\n",
+    "        # 如果只包含部分语言课程，则删除这些课程\n",
+    "        courses = courses - language_courses\n",
+    "    \n",
+    "    # 将结果集合转换回字符串并返回\n",
+    "    return \", \".join(sorted(courses))\n",
+    "\n",
+    "# 应用函数处理 'Modules' 列\n",
+    "if 'Modules' in df.columns:\n",
+    "    df['Modules'] = df['Modules'].apply(process_modules)\n",
+    "else:\n",
+    "    print(\"数据中不存在 'Modules' 列\")\n",
+    "\n",
+    "# # 保存更新后的文件\n",
+    "# df.to_excel('更新后的学生mandatory数据_processed.xlsx', index=False)\n",
+    "# print(\"已生成处理后的文件 '更新后的学生mandatory数据_processed.xlsx'\")\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "已生成包含课程统计的文件 '更新后的学生mandatory数据.xlsx'\n"
+     ]
+    }
+   ],
+   "source": [
+    "# import pandas as pd\n",
+    "\n",
+    "# # 加载文件\n",
+    "# file_path = '学生mandatory数据.xlsx'\n",
+    "# df = pd.read_excel(file_path)\n",
+    "\n",
+    "# 检查 'Modules' 列是否存在并统计不同课程的数量\n",
+    "if 'Modules' in df.columns:\n",
+    "    # 假设课程名称在 'Modules' 列中以逗号分隔\n",
+    "    df['course counts'] = df['Modules'].apply(lambda x: len(set(x.split(','))) if pd.notnull(x) else 0)\n",
+    "else:\n",
+    "    print(\"数据中不存在 'Modules' 列\")\n",
+    "\n",
+    "\n",
+    "# 保存更新后的文件\n",
+    "df.to_excel('更新后的学生mandatory数据.xlsx', index=False)\n",
+    "print(\"已生成包含课程统计的文件 '更新后的学生mandatory数据.xlsx'\")"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.9.7"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
